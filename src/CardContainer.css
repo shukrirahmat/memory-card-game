@@ -1,0 +1,10 @@
+.cardcontainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 20px;
+}
+
+.card {
+    min-height: 200px;
+    background-color: chocolate;
+}
