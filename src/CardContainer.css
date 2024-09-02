@@ -6,5 +6,13 @@
 
 .card {
     min-height: 200px;
-    background-color: chocolate;
+    background-color: whitesmoke;
+    display: flex;
+    flex-direction:row;
+    justify-content: center;
+    align-content: center;
+}
+
+.card img {
+    width: 75%;
 }
