@@ -3,10 +3,9 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useRef } from "react";
 
-function CardContainer() {
+function CardContainer({setScore, currentScore, setRound, currentRound, setHighscore, currentHighscore}) {
   const [randomIds, setRandomIds] = useState(selectRandomId(12))
   const [imageSources, setImageSources] = useState([]);
-  const [score, setScore] = useState(0);
   let pickedCardsId = useRef([]);
 
 
@@ -34,17 +33,22 @@ function CardContainer() {
   function handleCardChoose(id) {
     if (pickedCardsId.current.includes(id)) {
       pickedCardsId.current = [];
-      setScore(0)
+      setScore(0);
+      setRound(1);
     } else {
       const idListCopy = pickedCardsId.current.slice();
       idListCopy.push(id)
       pickedCardsId.current = idListCopy;
-      setScore(score + 1);
+
+      const newScore = currentScore + 100 * currentRound;
+      setScore(newScore);
+      if (currentHighscore < newScore) setHighscore(newScore);
     }
 
     if (pickedCardsId.current.length >= 12) {
       pickedCardsId.current = [];
       setRandomIds(selectRandomId(12));
+      setRound(currentRound + 1)
     } else {
       setImageSources(shuffle(imageSources));
     }
@@ -103,7 +107,6 @@ function CardContainer() {
   return (
     <div className="cardcontainer">
       {imageSources.length > 0? (<CardList chooseCard={handleCardChoose}/>) : (<p>LOADING ROUND...</p>)}
-      <p>{score}</p> 
     </div>
   );
 }
