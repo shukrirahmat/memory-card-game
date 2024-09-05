@@ -41,7 +41,13 @@ function CardContainer() {
       pickedCardsId.current = idListCopy;
       setScore(score + 1);
     }
-    setImageSources(shuffle(imageSources));
+
+    if (pickedCardsId.current.length >= 12) {
+      pickedCardsId.current = [];
+      setRandomIds(selectRandomId(12));
+    } else {
+      setImageSources(shuffle(imageSources));
+    }
   }
 
   function selectRandomId(amount) {
@@ -96,7 +102,7 @@ function CardContainer() {
 
   return (
     <div className="cardcontainer">
-      {imageSources.length > 0? (<CardList chooseCard={handleCardChoose}/>) : (<p>PLEASE WAIT</p>)}
+      {imageSources.length > 0? (<CardList chooseCard={handleCardChoose}/>) : (<p>LOADING ROUND...</p>)}
       <p>{score}</p> 
     </div>
   );
