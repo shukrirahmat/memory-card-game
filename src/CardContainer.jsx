@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useRef } from "react";
 
 function CardContainer() {
+  const [randomIds, setRandomIds] = useState(selectRandomId(12))
   const [imageSources, setImageSources] = useState([]);
   const [score, setScore] = useState(0);
   let pickedCardsId = useRef([]);
@@ -15,8 +16,7 @@ function CardContainer() {
 
     if (!ignore) {
       const sources = [];
-      const ids = [1, 4, 7, 18, 23, 25, 42, 45, 54, 62 , 66, 73, 74, 80, 94, 96, 99, 103, 108, 113, 118, 123, 139, 151]
-
+      const ids = randomIds;
       const promises = ids.map((id) =>
         fetch(`https://pokeapi.co/api/v2/pokemon/${id}`, {
           mode: "cors",
@@ -29,7 +29,7 @@ function CardContainer() {
     }
 
     return () => {ignore = true};
-  }, []);
+  }, [randomIds]);
 
   function handleCardChoose(id) {
     if (pickedCardsId.current.includes(id)) {
@@ -41,28 +41,40 @@ function CardContainer() {
       pickedCardsId.current = idListCopy;
       setScore(score + 1);
     }
+    setImageSources(shuffle(imageSources));
   }
 
-  function selectRandomIndex(amount) {
+  function selectRandomId(amount) {
     let indexes = [];
     for (let i = 0; i < amount; i++) {
       let num = false;
       while (!num) {
-        let possibleNum = Math.floor(Math.random() * imageSources.length);
+        let possibleNum = Math.floor(Math.random() * 150) + 1;
         if (!indexes.includes(possibleNum)) num = possibleNum;
       }
       indexes.push(num);
     }
     return indexes;
+  }
 
+  function shuffle(array) {
+
+    let ids = array.slice();
+ 
+    for (let i = ids.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      let temp = ids[i];
+      ids[i] = ids[j];
+      ids[j] = temp;
+    }
+
+    return ids;
   }
 
   function CardList({chooseCard}) {
-    let randomIndexes = selectRandomIndex(12);
-    let shownCards = imageSources.filter((_, index) => randomIndexes.includes(index));
     return (
       <>
-      {shownCards.map((source) => {
+      {imageSources.map((source) => {
         return (
           <div key={source.id} className="card" onClick={() => chooseCard(source.id)}>
             <img
