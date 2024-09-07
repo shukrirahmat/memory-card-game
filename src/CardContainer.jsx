@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useRef } from "react";
 
-function CardContainer({setScore, currentScore, setRound, currentRound, setHighscore, currentHighscore}) {
+function CardContainer({setScore, currentScore, setLevel, currentLevel, setHighscore, currentHighscore}) {
   const [sourceIds, setSourceIds] = useState(selectPokemonId(1))
   const [imageSources, setImageSources] = useState([]);
   let pickedCardsId = useRef([]);
@@ -34,30 +34,30 @@ function CardContainer({setScore, currentScore, setRound, currentRound, setHighs
     if (pickedCardsId.current.includes(id)) {
       pickedCardsId.current = [];
       setScore(0);
-      setRound(1);
+      setLevel(1);
       setSourceIds(selectPokemonId(1));
     } else {
       const idListCopy = pickedCardsId.current.slice();
       idListCopy.push(id)
       pickedCardsId.current = idListCopy;
 
-      const newScore = currentScore + 100 * currentRound;
+      const newScore = currentScore + 100 * currentLevel;
       setScore(newScore);
       if (currentHighscore < newScore) setHighscore(newScore);
     }
 
-    const cardAmount = currentRound < 8? 8 : 12;
+    const cardAmount = currentLevel < 8? 8 : 12;
 
     if (pickedCardsId.current.length >= cardAmount) {
       pickedCardsId.current = [];
-      setSourceIds(selectPokemonId(currentRound + 1));
-      setRound(currentRound + 1)
+      setSourceIds(selectPokemonId(currentLevel + 1));
+      setLevel(currentLevel + 1)
     } else {
       setImageSources(shuffle(imageSources));
     }
   }
 
-  function selectPokemonId(round) {
+  function selectPokemonId(level) {
 
     let ids;
     const one = [1, 4, 7, 25, 50, 52, 54, 60, 66, 79, 109, 151];
@@ -68,33 +68,18 @@ function CardContainer({setScore, currentScore, setRound, currentRound, setHighs
     const six = [15, 26, 38, 53, 54, 65, 96, 97, 101, 125, 135, 145];
     const seven = [20, 68, 76, 82, 91, 95, 105, 112, 128, 132, 133, 137];
 
-    const levels = [one, two, three, four, five, six, seven];
+    const stages = [one, two, three, four, five, six, seven];
 
-    if (round < 8) {
-      const level = levels[round - 1];
-      ids = shuffle(level).slice(0, 8);
+    if (level < 8) {
+      const stage = stages[level - 1];
+      ids = shuffle(stage).slice(0, 8);
     } else {
-      const level = levels[(round - 1) % 7];
-      ids = shuffle(level).slice();
+      const stage = stages[(level - 1) % 7];
+      ids = shuffle(stage).slice();
     }
 
     return ids;
   }
-
-  /*
-  function selectRandomId(amount) {
-    let indexes = [];
-    for (let i = 0; i < amount; i++) {
-      let num = false;
-      while (!num) {
-        let possibleNum = Math.floor(Math.random() * 150) + 1;
-        if (!indexes.includes(possibleNum)) num = possibleNum;
-      }
-      indexes.push(num);
-    }
-    return indexes;
-  }
-  */
 
   function shuffle(array) {
 
@@ -135,7 +120,7 @@ function CardContainer({setScore, currentScore, setRound, currentRound, setHighs
 
   return (
     <div className="cardcontainer">
-      {imageSources.length > 0? (<CardList chooseCard={handleCardChoose}/>) : (<p>LOADING ROUND {currentRound}</p>)}
+      {imageSources.length > 0? (<CardList chooseCard={handleCardChoose}/>) : (<p>LOADING LEVEL {currentLevel}</p>)}
     </div>
   );
 }

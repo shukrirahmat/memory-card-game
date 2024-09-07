@@ -6,16 +6,16 @@ import Header from "./Header";
 function App() {
   const [score, setScore] = useState(0);
   const [highscore, setHighscore] = useState(0);
-  const [round, setRound] = useState(1);
+  const [level, setLevel] = useState(1);
 
   return (
     <div>
-      <Header score={score} highscore={highscore} round={round} />
+      <Header score={score} highscore={highscore} level={level} />
       <CardContainer
         setScore={setScore}
         currentScore={score}
-        setRound={setRound}
-        currentRound={round}
+        setLevel={setLevel}
+        currentLevel={level}
         setHighscore={setHighscore}
         currentHighscore={highscore}
       />
