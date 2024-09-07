@@ -5,9 +5,10 @@ function Header(props) {
         <div className='header'>
             <p className='title'>MEMORY GAME</p>
             <div className='description'>
-                <p> - Get points by clicking all 12 different pokemon shown, without clicking the same one twice in each round</p>
+                <p> - Get points by clicking all different pokemon shown, without clicking the same one twice in each round</p>
                 <p> - Once a round is finished, new set of pokemon will appear</p>
-                <p> - Bonus points for each round!</p>
+                <p> - Each round gets harder but you get bonus points!</p>
+                <p> - Clicking smae pokemon will resets you back to round 1</p>
             </div>
             <div className='scoreboard'>
                 <p> Round : {props.round}</p>

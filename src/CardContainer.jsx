@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRef } from "react";
 
 function CardContainer({setScore, currentScore, setRound, currentRound, setHighscore, currentHighscore}) {
-  const [randomIds, setRandomIds] = useState(selectRandomId(12))
+  const [sourceIds, setSourceIds] = useState(selectPokemonId(1))
   const [imageSources, setImageSources] = useState([]);
   let pickedCardsId = useRef([]);
 
@@ -15,7 +15,7 @@ function CardContainer({setScore, currentScore, setRound, currentRound, setHighs
 
     if (!ignore) {
       const sources = [];
-      const ids = randomIds;
+      const ids = sourceIds;
       const promises = ids.map((id) =>
         fetch(`https://pokeapi.co/api/v2/pokemon/${id}`, {
           mode: "cors",
@@ -28,14 +28,14 @@ function CardContainer({setScore, currentScore, setRound, currentRound, setHighs
     }
 
     return () => {ignore = true};
-  }, [randomIds]);
+  }, [sourceIds]);
 
   function handleCardChoose(id) {
     if (pickedCardsId.current.includes(id)) {
       pickedCardsId.current = [];
       setScore(0);
       setRound(1);
-      setRandomIds(selectRandomId(12));
+      setSourceIds(selectPokemonId(1));
     } else {
       const idListCopy = pickedCardsId.current.slice();
       idListCopy.push(id)
@@ -46,15 +46,42 @@ function CardContainer({setScore, currentScore, setRound, currentRound, setHighs
       if (currentHighscore < newScore) setHighscore(newScore);
     }
 
-    if (pickedCardsId.current.length >= 12) {
+    const cardAmount = currentRound < 8? 8 : 12;
+
+    if (pickedCardsId.current.length >= cardAmount) {
       pickedCardsId.current = [];
-      setRandomIds(selectRandomId(12));
+      setSourceIds(selectPokemonId(currentRound + 1));
       setRound(currentRound + 1)
     } else {
       setImageSources(shuffle(imageSources));
     }
   }
 
+  function selectPokemonId(round) {
+
+    let ids;
+    const one = [1, 4, 7, 25, 50, 52, 54, 60, 66, 79, 109, 151];
+    const two = [71, 123, 131, 55, 58, 27, 108, 143, 111, 20, 78, 98];
+    const three = [29, 32, 37, 77, 120, 121, 12, 49, 40, 36, 106, 107]
+    const four = [6, 42, 55, 146, 145, 18, 22, 83, 85, 137, 142, 144];
+    const five = [5, 37, 45, 47, 59, 78, 99, 119, 120, 126, 136, 129];
+    const six = [15, 26, 38, 53, 54, 65, 96, 97, 101, 125, 135, 145];
+    const seven = [20, 68, 76, 82, 91, 95, 105, 112, 128, 132, 133, 137];
+
+    const levels = [one, two, three, four, five, six, seven];
+
+    if (round < 8) {
+      const level = levels[round - 1];
+      ids = shuffle(level).slice(0, 8);
+    } else {
+      const level = levels[(round - 1) % 7];
+      ids = shuffle(level).slice();
+    }
+
+    return ids;
+  }
+
+  /*
   function selectRandomId(amount) {
     let indexes = [];
     for (let i = 0; i < amount; i++) {
@@ -67,6 +94,7 @@ function CardContainer({setScore, currentScore, setRound, currentRound, setHighs
     }
     return indexes;
   }
+  */
 
   function shuffle(array) {
 
