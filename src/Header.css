@@ -1,18 +1,33 @@
 .header {
-    background-color: brown;
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    grid-template-rows: 1fr 1fr;
+    display: flex;
+    flex-direction: row;
     gap: 20px;
+    align-items: center;
+    color: rgb(218, 165, 32);
 }
 
 .header .title {
-    font-size: 50px;
-    grid-row: 1/-1;
+    font-family: 'Play', sans-serif;
+    font-weight: bold;
+    font-size: 40px;
 }
 
-.header .scoreboard {
+.header .right {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.header .right .description {
+    font-family: 'Play', sans-serif;
+}
+
+.header .right .scoreboard {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    font-family: 'Play', sans-serif;
+    font-weight: bold;
+    font-size: 25px;
 }
 
