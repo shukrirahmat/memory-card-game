@@ -35,6 +35,7 @@ function CardContainer({setScore, currentScore, setRound, currentRound, setHighs
       pickedCardsId.current = [];
       setScore(0);
       setRound(1);
+      setRandomIds(selectRandomId(12));
     } else {
       const idListCopy = pickedCardsId.current.slice();
       idListCopy.push(id)
@@ -92,7 +93,7 @@ function CardContainer({setScore, currentScore, setRound, currentRound, setHighs
                 source.sprites.versions["generation-i"]["red-blue"]
                   .front_transparent
               }
-              alt={source.name + "Sprite"}
+              alt="Sprite"
             ></img>
             <p>{source.name.toUpperCase()}</p>
           </div>
@@ -106,7 +107,7 @@ function CardContainer({setScore, currentScore, setRound, currentRound, setHighs
 
   return (
     <div className="cardcontainer">
-      {imageSources.length > 0? (<CardList chooseCard={handleCardChoose}/>) : (<p>LOADING ROUND...</p>)}
+      {imageSources.length > 0? (<CardList chooseCard={handleCardChoose}/>) : (<p>LOADING ROUND {currentRound}</p>)}
     </div>
   );
 }
