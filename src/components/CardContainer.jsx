@@ -1,4 +1,4 @@
-import "./CardContainer.css";
+import "../styles/CardContainer.css";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useRef } from "react";
@@ -103,6 +103,7 @@ function CardContainer({
   }
 
   function handleRetry() {
+    setImageSources([]);
     setSourceIds(selectPokemonId(1));
     setLost(false);
   }

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
-import CardContainer from "./CardContainer";
-import Header from "./Header";
+import CardContainer from "./components/CardContainer";
+import Header from "./components/Header";
 
 function App() {
   const [score, setScore] = useState(0);
